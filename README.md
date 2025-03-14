@@ -1,5 +1,5 @@
-# Team-1  
-[1팀] 과제 제출 Repository
+# Team-3  
+[3팀] 과제 제출 Repository
 
 <br><br>
 
