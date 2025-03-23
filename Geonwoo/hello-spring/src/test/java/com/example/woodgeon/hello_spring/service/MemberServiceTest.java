@@ -15,14 +15,14 @@ class MemberServiceTest {
 
     @BeforeEach
     public void beforeEach() {
-        memoryMemberRepository = new MemoryMemberRepository(0);
+        memoryMemberRepository = new MemoryMemberRepository();
         memberService = new MemberService(memoryMemberRepository);
     }
 
     @AfterEach
     public void afterEach() {
         // 4-3 테스트케이스 코드인듯
-        memoryMemberRepository.clearStore();
+        // memoryMemberRepository.clearStore();
     }
 
     @Test

@@ -3,15 +3,20 @@ package com.example.woodgeon.hello_spring.service;
 import com.example.woodgeon.hello_spring.Repository.MemberRepository;
 import com.example.woodgeon.hello_spring.Repository.MemoryMemberRepository;
 import com.example.woodgeon.hello_spring.domain.Member;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class MemberService {
 
     private final MemberRepository memberRepository;
 
     // 직접 생성하지 않고 외부에서 넣어주는 것. Dependency Injection
+    // 마찬가자로 memberRepository 를 자동 연결해줌
+    @Autowired
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
