@@ -1,6 +1,15 @@
 package com.example.woodgeon.hello_spring.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Member {
+
+    // GenerationType.IDENTITY : DB가 Id를 자동으로 생성해주는 것
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 

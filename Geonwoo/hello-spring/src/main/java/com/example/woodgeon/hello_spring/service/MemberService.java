@@ -5,11 +5,12 @@ import com.example.woodgeon.hello_spring.Repository.MemoryMemberRepository;
 import com.example.woodgeon.hello_spring.domain.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-
+@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
