@@ -16,26 +16,24 @@ import javax.sql.DataSource;
 @Configuration
 public class SpringConfig {
 
-    // @PersistenceContext
-    private final EntityManager em;
-    // DI
+    private final MemberRepository memberRepository;
+
     @Autowired
-    public SpringConfig(EntityManager em) {
-        this.em = em;
+    public SpringConfig(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
     }
 
     @Bean
     public MemberService memberService() {
-        return new MemberService(memberRepository());
+        return new MemberService(memberRepository);
     }
-
     // 구현체만 갈아끼우기만 하면 된다.
-    @Bean
-    public MemberRepository memberRepository() {
+//    @Bean
+//    public MemberRepository memberRepository() {
         // return new MemoryMemberRepository();
         // return new JdbcMemberRepository(dataSource);
         // return new JdbcMemberRepository(dataSource);
-        return new JpaMemberRepsoitory(em);
-    }
+        // return new JpaMemberRepsoitory(em);
+ //   }
 
 }
