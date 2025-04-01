@@ -10,11 +10,15 @@ import hello.core.member.MemberServiceImple;
 
 public class OrderApp {
     public static void main(String[] args) {
-        MemberService memberService = new MemberServiceImple();
-        OrderService orderService = new OrderServiceImple();
+        AppConfig appConfig = new AppConfig();
+        MemberService memberService = appConfig.memberService();
+        OrderService orderService = appConfig.orderService();
+
+//        MemberService memberService = new MemberServiceImple();
+//        OrderService orderService = new OrderServiceImple();
 
         Long memberId = 1L;
-        Member member = new Member(memberId, "seongjin", Grade.VIP);
+        Member member = new Member(memberId, "seongjin", Grade.BASIC);
         memberService.join(member);
 
         Order order = orderService.createOrder(memberId,"MacBook",10000);
