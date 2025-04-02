@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class MemoryMemberRepository implements MemberRepository{
 
-    private Map<Long, Member> store = new HashMap<>();
+    private static Map<Long, Member> store = new HashMap<>();
 
     // id를 기준으로 member를 저장
     @Override

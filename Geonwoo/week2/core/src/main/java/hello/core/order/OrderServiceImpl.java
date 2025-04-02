@@ -8,11 +8,16 @@ import hello.core.member.MemoryMemberRepository;
 
 public class OrderServiceImpl implements OrderService {
 
-    private final MemberRepository memberRepository = new MemoryMemberRepository();
-
+    // private final MemberRepository memberRepository = new MemoryMemberRepository();
     // private final DiscountPolicy discountPolicy;
-    // 누군가가 OrderServiceImpl에 대신 생성&주입 해줘야함
-    private DiscountPolicy discountPolicy;
+    // 누군가가 OrderServiceImpl에 대신 구현객체를 생성&주입 해줘야함
+    private final MemberRepository memberRepository;
+    private final DiscountPolicy discountPolicy;
+
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
 
     /***
      * 사용자의 등급을 조회해서 각각 다른 할인 정책을 적용해야한다.
