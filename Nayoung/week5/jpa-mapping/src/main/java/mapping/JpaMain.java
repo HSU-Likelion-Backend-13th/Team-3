@@ -1,9 +1,9 @@
 package mapping;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 
 import java.util.List;
 
@@ -16,30 +16,29 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Team team = new Team();
-            team.setName("Team 1");
-            em.persist(team);
+//           Team team = new Team();
+//           team.setName("Team 3");
+//           em.persist(team);
+//
+//           Member member = new Member();
+//           member.setName("nayoung");
+//           member.setTeam(team);
+//           em.persist(member);
+//
+//           em.flush();
+//           em.clear(); // 1차 캐시 초기화 -> 프록시 테스트 가능
+//
+//            Member findMember = em.find(Member.class, member.getId());
+//
+//            // Team은 아직 프록시 상태
+//            System.out.println("team 클래스 : " + findMember.getTeam().getClass());
+//
+//            // 쿼리가 나갈 것
+//            System.out.println("team 이름 : "+findMember.getTeam().getName());
 
-            Member member = new Member();
-            member.setUsername("Member1");
-            member.setTeam(team);
-            em.persist(member);
 
-            Member member2 = new Member();
-            member2.setUsername("Member2");
-            member2.setTeam(team);
-            em.persist(member2);
-
-            em.flush();
-            em.clear();
-
-            Member findMember = em.find(Member.class, member.getId());
-
-            List<Member> members = findMember.getTeam().getMembers();
-            for(Member m : members) { // iteration
-                System.out.println("멤버 : " + m.getUsername());
-            }
-
+            // 멤버 테이블에 있는 멤버 목록 가져옴
+            List<Member> members = em.createQuery("select m from Member m", Member.class).getResultList();
             tx.commit();
         }catch (Exception e) {
             tx.rollback();

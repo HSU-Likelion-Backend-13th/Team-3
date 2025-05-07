@@ -1,18 +1,18 @@
 package mapping;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 public class Member {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
 
-    @Column(name="USERNAME")
-    private String username;
+    @Column(name="MEMBER_NAME")
+    private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) // 멤버가 다수이므로 @ManyToOne으로 매핑
     @JoinColumn(name = "TEAM_ID") // 연관관계의 주인 -> 진짜 매핑
     private Team team;
 
@@ -24,12 +24,12 @@ public class Member {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Team getTeam() {
