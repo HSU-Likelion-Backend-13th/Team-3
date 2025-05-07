@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -17,29 +18,28 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Team team = new Team();
-            team.setName("Team 1");
-            em.persist(team);
-
-            Member member = new Member();
-            member.setUsername("Member1");
-            member.setTeam(team);
+            // 멤버 생성
+            Member member = new Member("성진","성북구","한성대","공학관 코딩라운지");
             em.persist(member);
 
-            Member member2 = new Member();
-            member2.setUsername("Member2");
-            member2.setTeam(team);
-            em.persist(member2);
+            // 아이템 생성
+            Item item = new Item("왕고구마",5000,5);
+            em.persist(item);
 
-            em.flush();
-            em.clear();
+            // OrderItem
+            OrderItem orderItem = new OrderItem();
+            orderItem.setCount(3);
+            orderItem.setOrderPrice(3*item.getPrice());
+            orderItem.setItem(item);
+            em.persist(orderItem);
 
-            Member findMember = em.find(Member.class, member.getId());
-
-            List<Member> members =findMember.getTeam().getMembers();
-            for(Member m : members) {
-                System.out.println("멤버 : "+m.getUsername());
-            }
+            //Order
+            Order order = new Order();
+            order.setMember(member);
+            order.setOrderDate(LocalDateTime.now());
+            order.setOrderStatus(OrderStatus.SUCCESS);
+            order.addOrderItem(orderItem);
+            em.persist(order);
 
             tx.commit();
         }catch (Exception e) {

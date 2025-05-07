@@ -2,40 +2,86 @@ package mapping;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+import java.awt.*;
+import java.util.ArrayList;
+
 @Entity
 public class Member {
     @Id @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
 
-    @Column(name = "USERNAME")
-    private String username;
+    private String name;
 
-    @ManyToOne
-    @JoinColumn(name="TEAM_ID") // 연관관계의 주인 -> 진짜 매핑
-    private Team team;
+    private String city;
 
-    public Long getId() {
-        return id;
+    private String street;
+
+    private String zipcode;
+
+    // odrders 선언
+    @OneToMany(mappedBy = "member")
+    private List<Order> orders = new ArrayList<>();
+
+    public Member() {}
+
+    public Member(String name, String city, String street,String zipcode) {
+        this.name = name;
+        this.city = city;
+        this.street = street;
+        this.zipcode = zipcode;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public List<Order> getOrders() {
+        return orders;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
-    public Team getTeam() {
-        return team;
+    public Long getId() {
+        return id;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
     }
 }
