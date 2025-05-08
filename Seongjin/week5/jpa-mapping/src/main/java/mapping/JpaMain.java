@@ -18,28 +18,27 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // 멤버 생성
-            Member member = new Member("성진","성북구","한성대","공학관 코딩라운지");
-            em.persist(member);
+//            Team team = new Team();
+//            team.setName("Team 4");
+//            em.persist(team);
+//
+//            Member member = new Member();
+//            member.setName("Park");
+//            member.setTeam(team);
+//            em.persist(member);
+//
+//            em.flush();
+//            em.clear(); // 1차 캐시 초기화 -> 프록시 테스트 가능
+//
+//            Member findMember = em.find(Member.class, member.getId());
+//
+//            // Team은 아직 프록시 상태
+//            System.out.println("team 클래스 : " + findMember.getTeam().getClass());
+//
+//            //쿼리가 나갈 것
+//            System.out.println("team 이름 : " + findMember.getTeam().getName());
 
-            // 아이템 생성
-            Item item = new Item("왕고구마",5000,5);
-            em.persist(item);
-
-            // OrderItem
-            OrderItem orderItem = new OrderItem();
-            orderItem.setCount(3);
-            orderItem.setOrderPrice(3*item.getPrice());
-            orderItem.setItem(item);
-            em.persist(orderItem);
-
-            //Order
-            Order order = new Order();
-            order.setMember(member);
-            order.setOrderDate(LocalDateTime.now());
-            order.setOrderStatus(OrderStatus.SUCCESS);
-            order.addOrderItem(orderItem);
-            em.persist(order);
+            List<Member> members = em.createQuery("select m from Member m", Member.class).getResultList();
 
             tx.commit();
         }catch (Exception e) {
