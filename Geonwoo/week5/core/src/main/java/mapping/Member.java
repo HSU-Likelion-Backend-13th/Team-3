@@ -2,36 +2,18 @@ package mapping;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 public class Member {
-
     @Id @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
 
+    @Column(name = "MEMBER_NAME")
     private String name;
 
-    private String city;
-
-    private String street;
-
-    private String zipcode;
-
-    @OneToMany(mappedBy = "member")
-    private List<Order> orders = new ArrayList<>();
-
-    public Member() {
-    }
-
-    public Member(String name, String city, String street, String zipcode) {
-        this.name = name;
-        this.city = city;
-        this.street = street;
-        this.zipcode = zipcode;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
 
     public Long getId() {
         return id;
@@ -49,19 +31,11 @@ public class Member {
         this.name = name;
     }
 
-    public String getCity() {
-        return city;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getZipcode() {
-        return zipcode;
-    }
-
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }
