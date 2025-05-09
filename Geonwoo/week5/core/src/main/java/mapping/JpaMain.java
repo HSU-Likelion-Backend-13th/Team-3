@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class JpaMain {
@@ -16,29 +17,24 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Team team = new Team();
-            team.setName("Team 1");
-            em.persist(team);
-
-            Member member = new Member();
-            member.setUsername("Member1");
-            member.setTeam(team);
+            Member member = new Member("건우", "부천시", "상오정로", "내 집");
             em.persist(member);
 
-            Member member2 = new Member();
-            member2.setUsername("Member2");
-            member2.setTeam(team);
-            em.persist(member2);
+            Item item = new Item("페퍼로니 피자", 25000, 5);
+            em.persist(item);
 
-            em.flush();
-            em.clear();
+            OrderItem orderItem = new OrderItem();
+            orderItem.setCount(3);
+            orderItem.setOrderPrice(3 * item.getPrice());
+            orderItem.setItem(item);
+            em.persist(orderItem);
 
-            Member findMember = em.find(Member.class, member.getId());
-            List<Member> members = findMember.getTeam().getMembers();
-
-            for(Member m : members){
-                System.out.println("Member name: " + m.getUsername());
-            }
+            Order order = new Order();
+            order.setMember(member);
+            order.setOrderDate(LocalDateTime.now());
+            order.setOrderStatus(OrderStatus.SUCCESS);
+            order.addOrderItem(orderItem); // 연관관계 편의 메서드를 통해 orderItems.setOrder(this) 안 해도 됨
+            em.persist(order);
 
             tx.commit();
         }catch (Exception e) {
