@@ -31,22 +31,22 @@ public class PostServiceImpl implements PostService {
                 .state(PostState.PROGRESS)
                 .build();
 
-        // 2. repository Post 저장 (postRepository 사용)
+        // 2. 엔티티를 DB에 저장
         Post savedPost = postRepository.save(post);
 
-        // 3. 반환 CreatePostRes
+        // 3. 저장된 게시글 ID를 응답 DTO로 감싸서 반환
         return new CreatePostRes(savedPost.getId());
     }
 
     // 게시글 단건 조회
     @Override
     public PostDetailRes getById(Long postId) {
-        // 1. postId에 해당하는 Post - DB에서 조회
+        // 1. postId로 DB에서 게시글 조회, 없으면 404 예외 발생
         Post post = postRepository.findById(postId)
-                // 404- postId에
+                // 404
                 .orElseThrow(PostNotFoundException::new);
 
-        // 2. PostDetailRes 반환
+        // 2. 조회된 게시글을 응답 DTO로 변환 후 반환
         return new PostDetailRes(
                 post.getId(),
                 post.getTitle(),
@@ -59,12 +59,13 @@ public class PostServiceImpl implements PostService {
         );
     }
 
+    // 게시글 전체 조회
     @Override
     public PostSummaryRes getAll() {
-        // 1. DB에서 모든 Post 조회 (postRepository)
+        // 1. DB에서 모든 게시글 조회
         List<Post> posts = postRepository.findAll();
 
-        // 2. posts -> PostSummaryRes 변환
+        // 2. 각 게시글을 요약 DTO(PostSummary)로 변환
         List<PostSummary> postSummaryList = new ArrayList<>();
         for(Post post : posts) {
             PostSummary postSummary = new PostSummary(
@@ -76,7 +77,7 @@ public class PostServiceImpl implements PostService {
             postSummaryList.add(postSummary);
         }
 
-        // 3. 반환
+        // 3. 전체 요약 목록을 포함한 응답 DTO 반환
         return new PostSummaryRes(postSummaryList);
     }
 }
