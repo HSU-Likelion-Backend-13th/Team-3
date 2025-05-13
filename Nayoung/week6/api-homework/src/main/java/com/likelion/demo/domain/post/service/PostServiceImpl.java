@@ -2,9 +2,11 @@ package com.likelion.demo.domain.post.service;
 
 import com.likelion.demo.domain.post.entity.Post;
 import com.likelion.demo.domain.post.entity.PostState;
+import com.likelion.demo.domain.post.exception.InvalidPasswordException;
 import com.likelion.demo.domain.post.exception.PostNotFoundException;
 import com.likelion.demo.domain.post.repository.PostRepository;
 import com.likelion.demo.domain.post.web.dto.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.likelion.demo.domain.post.web.dto.PostSummaryRes;
@@ -79,5 +81,36 @@ public class PostServiceImpl implements PostService {
 
         // 3. 전체 요약 목록을 포함한 응답 DTO 반환
         return new PostSummaryRes(postSummaryList);
+    }
+
+    // 게시글 수정
+    @Transactional
+    @Override
+    public PostDetailRes modifyOne(Long postId, ModifyPostReq modifyPostReq) {
+        // 1. DB에서 postId로 Post 찾기
+        Post foundPost = postRepository.findById(postId)
+        // 404 - 게시글 없음
+                .orElseThrow(PostNotFoundException::new);
+
+        // 2. 비밀번호 검증
+        // 403 - 비밀번호 불일치
+        if(!foundPost.getPassword().equals(modifyPostReq.getPassword())) {
+            throw new InvalidPasswordException();
+        }
+
+        // 3. post 수정
+        foundPost.modify(modifyPostReq.getTitle(), modifyPostReq.getContent());
+
+        // PostDetailRes 반환
+        return new PostDetailRes(
+                foundPost.getId(),
+                foundPost.getTitle(),
+                foundPost.getContent(),
+                foundPost.getUsername(),
+                foundPost.getPassword(),
+                foundPost.getState(),
+                foundPost.getCreatedAt(),
+                foundPost.getUpdatedAt()
+        );
     }
 }

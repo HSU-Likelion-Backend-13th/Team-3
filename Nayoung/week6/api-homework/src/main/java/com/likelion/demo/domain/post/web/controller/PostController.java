@@ -1,11 +1,9 @@
 package com.likelion.demo.domain.post.web.controller;
 
 import com.likelion.demo.domain.post.service.PostService;
-import com.likelion.demo.domain.post.web.dto.CreatePostReq;
-import com.likelion.demo.domain.post.web.dto.CreatePostRes;
-import com.likelion.demo.domain.post.web.dto.PostDetailRes;
-import com.likelion.demo.domain.post.web.dto.PostSummaryRes;
+import com.likelion.demo.domain.post.web.dto.*;
 import com.likelion.demo.global.response.SuccessResponse;
+import com.sun.net.httpserver.Authenticator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -58,6 +56,19 @@ public class PostController {
     }
 
     // 게시글 수정
+    @PutMapping("/{postId}")
+    public ResponseEntity<SuccessResponse<?>> modifyPost(
+            @PathVariable Long postId,
+            @RequestBody ModifyPostReq modifyPostReq
+    ) {
+        // 서비스
+        PostDetailRes postDetailRes = postService.modifyOne(postId, modifyPostReq);
+
+        // 반환
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(SuccessResponse.ok(postDetailRes));
+    }
 
     // 게시글 삭제
 }

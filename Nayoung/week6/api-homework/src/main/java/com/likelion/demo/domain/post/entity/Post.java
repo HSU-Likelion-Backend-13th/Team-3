@@ -24,6 +24,12 @@ public class Post extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private PostState state;
 
+    // 게시글 수정(제목, 내용)
+    public void modify(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
 }
 
 /* @Builder 어노테이션은 이렇게 객체를 빌더 패턴으로 생성할 수 있게 해준다.
