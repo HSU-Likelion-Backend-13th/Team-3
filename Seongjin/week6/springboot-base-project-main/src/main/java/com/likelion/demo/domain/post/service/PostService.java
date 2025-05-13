@@ -8,4 +8,7 @@ public interface PostService {
 
     //게시글 단건 조회
     PostDetailRes getById(Long postId);
+
+    //게시글 전체 조회
+    PostSummaryRes getAll();
 }
