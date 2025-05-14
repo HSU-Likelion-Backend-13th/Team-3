@@ -14,4 +14,6 @@ public interface PostService {
 
     //게시글 수정
     PostDetailRes modifyOne(Long postId, ModifyPostReq modifyPostReq);
+
+    void deleteOne(Long postId, DeletePostReq deletePostReq);
 }
