@@ -11,4 +11,6 @@ public interface PostService {
     PostDetailRes getById(Long postId);
 
     PostSummaryRes getAll();
+
+    PostDetailRes modifyOne(Long postId, ModifyPostReq modifyPostReq);
 }
