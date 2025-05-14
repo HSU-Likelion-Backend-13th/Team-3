@@ -70,4 +70,18 @@ public class PostController {
     }
 
     // 게시글 삭제
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<SuccessResponse<?>> deletePost(
+            @PathVariable Long postId,
+            @RequestBody DeletePostReq deletePostReq
+    ) {
+        // 서비스 로직
+        postService.deleteOne(postId, deletePostReq);
+
+        // 반환
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                // empty: 데이터를 안 받고, Null을 넣어주는 SuccessResponse의 메서드
+                .body(SuccessResponse.empty());
+    }
 }

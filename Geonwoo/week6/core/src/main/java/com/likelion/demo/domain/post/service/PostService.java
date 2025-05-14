@@ -13,4 +13,6 @@ public interface PostService {
     PostSummaryRes getAll();
 
     PostDetailRes modifyOne(Long postId, ModifyPostReq modifyPostReq);
+
+    void deleteOne(Long postId, DeletePostReq deletePostReq);
 }

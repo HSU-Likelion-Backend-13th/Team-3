@@ -103,5 +103,21 @@ public class PostServiceImpl implements PostService {
                 foundPost.getUpdatedAt()
         );
     }
+    @Transactional
+    @Override
+    public void deleteOne(Long postId, DeletePostReq deletePostReq) {
+        // 1. Db에서 Post 조회
+        Post post = postRepository.findById(postId)
+                // 404 - 게시글이 존재하지 않습니다.
+                .orElseThrow(PostNotFoundException::new);
+
+        // 2. 비밀번호 검증
+        if (!post.getPassword().equals(deletePostReq.getPassword())) {
+            // 403 - 비밀번호가 일치하지 않습니다.
+            throw new InvalidPasswordException();
+        }
+        // 3. Delete (똑같이 Entity에서 처리)
+        postRepository.delete(post);
+    }
 
 }
