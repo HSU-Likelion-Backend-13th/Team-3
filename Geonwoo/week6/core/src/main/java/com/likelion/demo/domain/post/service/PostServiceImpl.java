@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -53,4 +56,24 @@ public class PostServiceImpl implements PostService {
                 post.getUpdatedAt()
         );
     }
+
+    @Override
+    public PostSummaryRes getAll() {
+        // 1. DB에서 모든 게시글을 조회(레포지토리 사용)
+        List<Post> posts = postRepository.findAll();
+        // 2. 모든 게시글을 담은 List 형식으로 반환  post -> PostSummaryRes로 변환
+        List<PostSummaryRes.PostSummary> postSummaryList = new ArrayList<>();
+        for (Post post : posts){
+            PostSummaryRes.PostSummary postSummary = new PostSummaryRes.PostSummary(
+                    post.getId(),
+                    post.getTitle(),
+                    post.getUsername(),
+                    post.getCreatedAt()
+            );
+            postSummaryList.add(postSummary);
+        }
+        // 반환
+        return new PostSummaryRes(postSummaryList);
+    }
+
 }
