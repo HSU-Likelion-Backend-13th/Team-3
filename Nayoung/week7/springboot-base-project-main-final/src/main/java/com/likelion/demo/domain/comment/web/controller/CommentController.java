@@ -1,10 +1,7 @@
 package com.likelion.demo.domain.comment.web.controller;
 
 import com.likelion.demo.domain.comment.service.CommentService;
-import com.likelion.demo.domain.comment.web.dto.CommentDetailRes;
-import com.likelion.demo.domain.comment.web.dto.CommentSummeryRes;
-import com.likelion.demo.domain.comment.web.dto.CreateCommentReq;
-import com.likelion.demo.domain.comment.web.dto.CreateCommentRes;
+import com.likelion.demo.domain.comment.web.dto.*;
 import com.likelion.demo.global.response.SuccessResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,5 +34,16 @@ public class CommentController {
     public ResponseEntity<SuccessResponse<?>> getComment(@PathVariable Long postId, @PathVariable Long commentId) {
         CommentDetailRes res = commentService.getComment(postId, commentId);
         return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(res));
+    }
+
+    @PutMapping("/{commentId}")
+    public ResponseEntity<SuccessResponse<?>> modifyComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody @Valid ModifyCommentReq modifyCommentReq) {
+
+        // 서비스
+        CommentDetailRes commentDetailRes = commentService.modifyOne(postId, commentId, modifyCommentReq);
+
+        //반환
+        return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(commentDetailRes));
+
     }
 }

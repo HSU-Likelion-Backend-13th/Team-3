@@ -1,17 +1,17 @@
 package com.likelion.demo.domain.comment.service;
 
 import com.likelion.demo.domain.comment.entity.Comment;
+import com.likelion.demo.domain.comment.exception.CommentInvalidPassword;
 import com.likelion.demo.domain.comment.exception.CommentNotFoundException;
 import com.likelion.demo.domain.comment.repository.CommentRepository;
-import com.likelion.demo.domain.comment.web.dto.CommentDetailRes;
-import com.likelion.demo.domain.comment.web.dto.CommentSummeryRes;
-import com.likelion.demo.domain.comment.web.dto.CreateCommentReq;
-import com.likelion.demo.domain.comment.web.dto.CreateCommentRes;
+import com.likelion.demo.domain.comment.web.dto.*;
 import com.likelion.demo.domain.post.entity.Post;
 import com.likelion.demo.domain.post.exception.PostNotFoundException;
 import com.likelion.demo.domain.post.repository.PostRepository;
+import com.likelion.demo.domain.post.web.dto.PostDetailRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
 
@@ -70,4 +70,46 @@ public class CommentServiceImpl implements CommentService {
                 comment.getUpdatedAt()
         );
     }
+
+    // 댓글 수정
+    @Transactional
+    @Override
+    public CommentDetailRes modifyOne(Long postId, Long commentId, ModifyCommentReq modifyCommentReq) {
+
+        // 1. DB에서 postId로 Post 찾기
+        Post foundPost = postRepository.findById(postId)
+        // 404 - 게시글 없음
+                .orElseThrow(PostNotFoundException::new);
+
+        // 2. commentId로 Comment 찾기
+        Comment foundComment = commentRepository.findById(commentId)
+        // 404 - 댓글 없음
+                .orElseThrow(CommentNotFoundException::new);
+
+        // 3. 댓글이 해당 게시물에 속해 있는지 검증
+        // 404 - 댓글 없음
+        if (!foundComment.getPost().getId().equals(postId)) {
+            throw new CommentNotFoundException();
+        }
+
+        // 4. 비밀번호 검증
+        // 403 - 비밀번호 불일치
+        if(!foundComment.getPassword().equals(modifyCommentReq.password())) {
+            throw new CommentInvalidPassword();
+        }
+
+        // 5. comment 수정
+        foundComment.modify(modifyCommentReq.content());
+
+        // 6. CommentDetailRes 반환
+        return new CommentDetailRes(
+                foundComment.getId(),
+                foundComment.getPost().getId(),
+                foundComment.getContent(),
+                foundComment.getUsername(),
+                foundComment.getCreatedAt(),
+                foundComment.getUpdatedAt()
+        );
+    }
 }
+
