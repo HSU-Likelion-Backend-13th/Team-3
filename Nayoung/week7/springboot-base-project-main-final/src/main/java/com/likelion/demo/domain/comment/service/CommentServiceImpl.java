@@ -113,6 +113,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     // 댓글 삭제
+    @Transactional
     @Override
     public void deleteOne(Long postId, Long commentId, DeleteCommentReq deleteCommentReq) {
         // 1. 게시글 존재 확인
