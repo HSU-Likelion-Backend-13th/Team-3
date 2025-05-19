@@ -111,5 +111,35 @@ public class CommentServiceImpl implements CommentService {
                 foundComment.getUpdatedAt()
         );
     }
+
+    // 댓글 삭제
+    @Override
+    public void deleteOne(Long postId, Long commentId, DeleteCommentReq deleteCommentReq) {
+        // 1. 게시글 존재 확인
+        Post foundPost = postRepository.findById(postId)
+        // 404 - 게시글 존재하지 않음
+                .orElseThrow(PostNotFoundException::new);
+
+        // 2. 댓글 존재 확인
+        Comment foundComment = commentRepository.findById(commentId)
+        // 404 - 댓글 없음
+                .orElseThrow(CommentNotFoundException::new);
+
+        // 3. 댓글이 해당 게시물에 속해 있는지 검증
+        // 404 - 댓글 없음
+        if (!foundComment.getPost().getId().equals(postId)) {
+            throw new CommentNotFoundException();
+        }
+
+        // 4. 비밀번호 검증
+        // 403 - 비밀번호 불일치
+        if(!foundComment.getPassword().equals(deleteCommentReq.password())) {
+            throw new CommentInvalidPassword();
+        }
+
+        // 5. 삭제
+        commentRepository.delete(foundComment);
+
+    }
 }
 

@@ -36,6 +36,7 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(res));
     }
 
+    // 댓글 수정
     @PutMapping("/{commentId}")
     public ResponseEntity<SuccessResponse<?>> modifyComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody @Valid ModifyCommentReq modifyCommentReq) {
 
@@ -45,5 +46,16 @@ public class CommentController {
         //반환
         return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(commentDetailRes));
 
+    }
+
+    // 댓글 삭제
+    @DeleteMapping("{commentId}")
+    public ResponseEntity<SuccessResponse<?>> deleteComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody @Valid DeleteCommentReq deleteCommentReq) {
+
+        // 서비스
+        commentService.deleteOne(postId, commentId, deleteCommentReq);
+
+        //반환
+        return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.empty());
     }
 }

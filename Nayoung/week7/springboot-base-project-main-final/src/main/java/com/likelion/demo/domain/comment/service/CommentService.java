@@ -10,4 +10,7 @@ public interface CommentService {
 
     // 댓글 수정
     CommentDetailRes modifyOne(Long postId, Long commentId, ModifyCommentReq modifyCommentReq);
+
+    // 댓글 삭제
+    void deleteOne(Long postId, Long commentId, DeleteCommentReq deleteCommentReq);
 }
