@@ -44,10 +44,10 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.ok(res));
     }
 
-//    @DeleteMapping("/{commentId}")
-//    public ResponseEntity<SuccessResponse<?>> deleteComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody @Valid DeleteCommentReq deleteCommentReq){
-//        commentService.deleteComment(postId,commentId,deleteCommentReq);
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.empty());
-//    }
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<SuccessResponse<?>> deleteComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody @Valid DeleteCommentReq deleteCommentReq){
+        commentService.deleteComment(postId,commentId,deleteCommentReq);
+
+        return ResponseEntity.status(HttpStatus.OK).body(SuccessResponse.empty());
+    }
 }

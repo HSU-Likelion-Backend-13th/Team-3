@@ -95,19 +95,19 @@ public class CommentServiceImpl implements CommentService {
         );
     }
 
-//    @Override
-//    public void deleteComment(Long postId, Long commentId, DeleteCommentReq deleteCommentReq) {
-//        Comment comment = commentRepository.findById(commentId)
-//                .orElseThrow(PostNotFoundException::new);
-//
-//        if(!comment.getPost().getId().equals(postId)){
-//            throw new PostNotFoundException();
-//        }
-//        //비밀번호 검증
-//        if(!comment.getPassword().equals(deleteCommentReq.getPassword())){
-//            throw new InvalidPasswordException();
-//        }
-//
-//        commentRepository.delete(comment);
-//    }
+    @Override
+    public void deleteComment(Long postId, Long commentId, DeleteCommentReq deleteCommentReq) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(PostNotFoundException::new);
+
+        if(!comment.getPost().getId().equals(postId)){
+           throw new PostNotFoundException();
+        }
+       //비밀번호 검증
+       if(!comment.getPassword().equals(deleteCommentReq.getPassword())){
+            throw new InvalidPasswordException();
+        }
+
+        commentRepository.delete(comment);
+    }
 }

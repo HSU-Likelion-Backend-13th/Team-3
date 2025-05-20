@@ -9,5 +9,5 @@ public interface CommentService {
     CommentDetailRes getComment(Long postId,Long commentId);
     CommentDetailRes modifyComment(Long postId, Long commentId, ModifyCommentReq modifyCommentReq);
 
-    //void deleteComment(Long postId, Long commentId, @Valid DeleteCommentReq deleteCommentReq);
+    void deleteComment(Long postId, Long commentId, @Valid DeleteCommentReq deleteCommentReq);
 }
