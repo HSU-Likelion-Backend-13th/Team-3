@@ -1,0 +1,19 @@
+package com.likelion.demo.domain.comment.web.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
+public class CreateCommentReq {
+    @NotBlank(message = "비어있을 수 없습니다")
+    private String content;
+
+    @NotBlank(message = "이름은 필수값입니다")
+    private String username;
+
+    @NotBlank(message = "비밀번호는 필수값입니다")
+    private String password;
+
+}
